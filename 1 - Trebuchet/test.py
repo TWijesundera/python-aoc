@@ -1,18 +1,28 @@
 import unittest
-from trebuchet import sum_calibrations, get_calibration
+from unittest import skip
+
+import trebuchet
+import trebuchet_retry
 
 
 class TrebuchetTest(unittest.TestCase):
-    def skiptest_calibration_correct(self):
+    def test_calibration_correct(self):
         ex_input = "pqr3stu8vwx"
-        calibration = get_calibration(ex_input)
+        calibration = trebuchet_retry.get_calibration_num(ex_input)
         self.assertEqual(calibration, "38")
+    
+    @skip
+    def test_overlapping_calibration(self):
+        ex_input = "2eightwone"
+        self.assertEqual("21", "21")
 
-    def skiptest_part1(self):
+    
+    def test_part1(self):
         example_input = ["1abc2", "pqr3stu8vwx", "a1b2c3d4e5f", "treb7uchet"]
         input_sum = 142
-        self.assertEqual(sum_calibrations(example_input), input_sum)
+        self.assertEqual(trebuchet_retry.sum_calibrations(example_input), input_sum)
 
+    @skip
     def test_part2(self):
         example_input = [
             "two1nine",
