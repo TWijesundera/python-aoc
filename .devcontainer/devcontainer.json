@@ -15,7 +15,8 @@
 				"VisualStudioExptTeam.vscodeintellicode",
 				"EditorConfig.EditorConfig",
 				"hbenl.vscode-test-explorer",
-				"ms-python.isort"
+				"ms-python.isort",
+				"ms-python.black-formatter"
 			]
 		}
 	}
