@@ -1,4 +1,5 @@
-from typing import List
+import re
+from typing import List, Match
 
 WORDS_TO_NUM = {
     "one": "1",
@@ -30,10 +31,35 @@ def get_calibration_num(line: str):
     return f"{first_num}{last_num}"
 
 
+def get_calibration_with_word(line: str):
+    found_words = []
+
+    for word in WORDS_TO_NUM.keys():
+        for match in re.finditer(word, line):
+            found_words.append(match)
+
+    match_digits = list(re.finditer(r"\d", line))
+
+    if match_digits:
+        found_words.extend(match_digits)
+
+    min_match = min(found_words, key=lambda x: x.start())
+    max_match = max(found_words, key=lambda x: x.end())
+
+    return "".join(
+        [
+            f"{WORDS_TO_NUM.get(min_group := min_match.group(), min_group)}",
+            f"{WORDS_TO_NUM.get(max_group := max_match.group(), max_group)}",
+        ]
+    )
+
+
 def sum_calibrations(lines: List):
     calibrations = []
     for line in lines:
-        calibration = get_calibration_num(line)
+        calibration = get_calibration_with_word(line)
+        print(line)
+        print(calibration)
         calibrations.append(int(calibration))
     return sum(calibrations)
 
