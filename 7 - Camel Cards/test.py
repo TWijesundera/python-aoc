@@ -1,6 +1,14 @@
 import unittest
 
-from camel_cards import Hand, Ranking, total_winnings, sort_cards, compare_hands
+from camel_cards import (
+    Hand,
+    Ranking,
+    total_winnings,
+    sort_cards,
+    compare_hands,
+    compare_joker,
+    total_winnings_joker,
+)
 
 
 class TestCamelCards(unittest.TestCase):
@@ -56,6 +64,30 @@ class TestCamelCards(unittest.TestCase):
         input = ["32T3K 765", "T55J5 684", "KK677 28", "KTJJT 220", "QQQJA 483"]
         sol = 6440
         res = total_winnings(input)
+        self.assertEqual(res, sol)
+
+    def test_joker_one(self):
+        input = "J267K"
+        bid = "30"
+        hand = Hand(input, bid)
+        self.assertIs(hand.joker_hand, Ranking.ONE)
+
+    def test_joker_ranking(self):
+        input = "KTJJT"
+        bid = "220"
+        hand = Hand(input, bid)
+        self.assertIs(hand.joker_hand, Ranking.FOUR)
+
+    def test_joker_sorting(self):
+        sol = ["32T3K", "KK677", "T55J5", "QQQJA", "KTJJT"]
+        input = ["32T3K 765", "T55J5 684", "KK677 28", "KTJJT 220", "QQQJA 483"]
+        res = sort_cards(input, compare_joker)
+        self.assertListEqual([x.hand for x in res], sol)
+
+    def test_joker_winnings(self):
+        input = ["32T3K 765", "T55J5 684", "KK677 28", "KTJJT 220", "QQQJA 483"]
+        sol = 5905
+        res = total_winnings_joker(input)
         self.assertEqual(res, sol)
 
 
